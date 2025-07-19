@@ -1,11 +1,12 @@
 package org.example.marketingfollowapiserver.dto
 
 import org.example.marketingfollowapiserver.enums.FollowStatus
+import java.util.UUID
 
 data class FollowAdvertiserMetadata(
     val id: Long,
-    val advertiserId: String,
-    val influencerId: String,
+    val advertiserId: UUID,
+    val influencerId: UUID,
     val followStatus: FollowStatus,
     val createdAt: Long,
     val lastModifiedAt: Long
@@ -13,8 +14,8 @@ data class FollowAdvertiserMetadata(
     companion object {
         fun of(
             id: Long,
-            advertiserId: String,
-            influencerId: String,
+            advertiserId: UUID,
+            influencerId: UUID,
             followStatus: FollowStatus,
             createdAt: Long,
             lastModifiedAt: Long

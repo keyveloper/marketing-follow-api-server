@@ -10,6 +10,7 @@ import org.example.marketingfollowapiserver.table.FollowAdvertisersTable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
+import java.util.UUID
 
 @Repository
 class FollowAdvertiserRepository {
@@ -52,7 +53,7 @@ class FollowAdvertiserRepository {
         }
     }
 
-    fun findByAdvertiserIdAndInfluencerId(advertiserId: String, influencerId: String): FollowAdvertiserEntity? {
+    fun findByAdvertiserIdAndInfluencerId(advertiserId: UUID, influencerId: UUID): FollowAdvertiserEntity? {
         return transaction {
             FollowAdvertiserEntity.find {
                 (FollowAdvertisersTable.advertiserId eq advertiserId) and
@@ -61,7 +62,7 @@ class FollowAdvertiserRepository {
         }
     }
 
-    fun findFollowersByAdvertiserId(advertiserId: String): List<FollowAdvertiserMetadata> {
+    fun findFollowersByAdvertiserId(advertiserId: UUID): List<FollowAdvertiserMetadata> {
         return transaction {
             FollowAdvertiserEntity.find {
                 (FollowAdvertisersTable.advertiserId eq advertiserId) and
@@ -70,7 +71,7 @@ class FollowAdvertiserRepository {
         }
     }
 
-    fun findFollowingByInfluencerId(influencerId: String): List<FollowAdvertiserMetadata> {
+    fun findFollowingByInfluencerId(influencerId: UUID): List<FollowAdvertiserMetadata> {
         return transaction {
             FollowAdvertiserEntity.find {
                 (FollowAdvertisersTable.influencerId eq influencerId) and

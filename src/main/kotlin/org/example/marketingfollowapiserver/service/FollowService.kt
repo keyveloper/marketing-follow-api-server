@@ -5,6 +5,7 @@ import org.example.marketingfollowapiserver.dto.*
 import org.example.marketingfollowapiserver.enums.FollowStatus
 import org.example.marketingfollowapiserver.repository.FollowAdvertiserRepository
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class FollowService(
@@ -12,7 +13,7 @@ class FollowService(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    fun followOrSwitch(advertiserId: String, influencerId: String): FollowOrSwitchResult {
+    fun followOrSwitch(advertiserId: UUID, influencerId: UUID): FollowOrSwitchResult {
         logger.info { "followOrSwitch called: advertiserId=$advertiserId, influencerId=$influencerId" }
 
         val existingEntity = followAdvertiserRepository.findByAdvertiserIdAndInfluencerId(
@@ -21,15 +22,15 @@ class FollowService(
         )
 
         return if (existingEntity != null) {
-            val previousStatus = existingEntity.followStatus
-            logger.info { "Existing relationship found, switching status from $previousStatus" }
+            val followStatus = existingEntity.followStatus
+            logger.info { "Existing relationship found, switching status from $followStatus" }
 
             val updatedMetadata = followAdvertiserRepository.switchFollowStatus(existingEntity)
 
             FollowOrSwitchResult.of(
                 followAdvertiserMetadata = updatedMetadata,
                 wasExisting = true,
-                previousStatus = previousStatus
+                followStatus = followStatus
             )
         } else {
             logger.info { "No existing relationship found, creating new FOLLOW relationship" }
@@ -45,12 +46,12 @@ class FollowService(
             FollowOrSwitchResult.of(
                 followAdvertiserMetadata = savedMetadata,
                 wasExisting = false,
-                previousStatus = null
+                followStatus = null
             )
         }
     }
 
-    fun getFollowersByAdvertiserId(advertiserId: String): GetFollowersResult {
+    fun getFollowersByAdvertiserId(advertiserId: UUID): GetFollowersResult {
         logger.info { "getFollowersByAdvertiserId called: advertiserId=$advertiserId" }
 
         val followers = followAdvertiserRepository.findFollowersByAdvertiserId(advertiserId)
@@ -60,7 +61,7 @@ class FollowService(
         return GetFollowersResult.of(followers = followers)
     }
 
-    fun getFollowingByInfluencerId(influencerId: String): GetFollowingResult {
+    fun getFollowingByInfluencerId(influencerId: UUID): GetFollowingResult {
         logger.info { "getFollowingByInfluencerId called: influencerId=$influencerId" }
 
         val following = followAdvertiserRepository.findFollowingByInfluencerId(influencerId)

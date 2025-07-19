@@ -5,18 +5,18 @@ import org.example.marketingfollowapiserver.enums.FollowStatus
 data class FollowOrSwitchResult(
     val followAdvertiserMetadata: FollowAdvertiserMetadata,
     val wasExisting: Boolean,
-    val previousStatus: FollowStatus?
+    val followStatus: FollowStatus?
 ) {
     companion object {
         fun of(
             followAdvertiserMetadata: FollowAdvertiserMetadata,
             wasExisting: Boolean,
-            previousStatus: FollowStatus?
+            followStatus: FollowStatus?
         ): FollowOrSwitchResult {
             return FollowOrSwitchResult(
                 followAdvertiserMetadata = followAdvertiserMetadata,
                 wasExisting = wasExisting,
-                previousStatus = previousStatus
+                followStatus = followStatus
             )
         }
     }

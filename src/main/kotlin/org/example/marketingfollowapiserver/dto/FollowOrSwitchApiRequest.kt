@@ -1,13 +1,15 @@
 package org.example.marketingfollowapiserver.dto
 
+import java.util.UUID
+
 data class FollowOrSwitchApiRequest(
-    val advertiserId: String,
-    val influencerId: String
+    val advertiserId: UUID,
+    val influencerId: UUID
 ) {
     companion object {
         fun of(
-            advertiserId: String,
-            influencerId: String
+            advertiserId: UUID,
+            influencerId: UUID
         ): FollowOrSwitchApiRequest {
             return FollowOrSwitchApiRequest(
                 advertiserId = advertiserId,

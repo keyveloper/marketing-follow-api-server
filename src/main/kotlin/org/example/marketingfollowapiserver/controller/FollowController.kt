@@ -6,6 +6,7 @@ import org.example.marketingfollowapiserver.enums.MSAServiceErrorCode
 import org.example.marketingfollowapiserver.service.FollowService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/follow")
@@ -36,7 +37,7 @@ class FollowController(
 
     @GetMapping("/followers")
     fun getFollowers(
-        @RequestParam advertiserId: String
+        @RequestParam advertiserId: UUID
     ): GetFollowersResponseFromServer {
         logger.info { "GET /api/follow/followers called with advertiserId: $advertiserId" }
 
@@ -53,7 +54,7 @@ class FollowController(
 
     @GetMapping("/following")
     fun getFollowing(
-        @RequestParam influencerId: String
+        @RequestParam influencerId: UUID
     ): GetFollowingResponseFromServer {
         logger.info { "GET /api/follow/following called with influencerId: $influencerId" }
 
