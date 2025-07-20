@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Users\\dideh\\Desktop\\marketing\\marketing-follow-api-server\\src\\main\\kotlin\\org\\example\\marketingfollowapiserver\")",
+      "Bash(dir /s /b \"C:\\Users\\dideh\\Desktop\\marketing\\marketing-follow-api-server\\src\\main\\kotlin\")",
+      "Bash(findstr:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
