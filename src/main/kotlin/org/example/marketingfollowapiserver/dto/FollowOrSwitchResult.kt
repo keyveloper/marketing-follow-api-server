@@ -3,18 +3,18 @@ package org.example.marketingfollowapiserver.dto
 import org.example.marketingfollowapiserver.enums.FollowStatus
 
 data class FollowOrSwitchResult(
-    val followAdvertiserMetadata: FollowAdvertiserMetadata,
+    val followAdvertiser: FollowAdvertiser,
     val wasExisting: Boolean,
     val followStatus: FollowStatus?
 ) {
     companion object {
         fun of(
-            followAdvertiserMetadata: FollowAdvertiserMetadata,
+            followAdvertiser: FollowAdvertiser,
             wasExisting: Boolean,
             followStatus: FollowStatus?
         ): FollowOrSwitchResult {
             return FollowOrSwitchResult(
-                followAdvertiserMetadata = followAdvertiserMetadata,
+                followAdvertiser = followAdvertiser,
                 wasExisting = wasExisting,
                 followStatus = followStatus
             )

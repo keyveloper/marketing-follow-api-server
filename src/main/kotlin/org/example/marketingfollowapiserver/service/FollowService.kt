@@ -28,7 +28,7 @@ class FollowService(
             val updatedMetadata = followAdvertiserRepository.switchFollowStatus(existingEntity)
 
             FollowOrSwitchResult.of(
-                followAdvertiserMetadata = updatedMetadata,
+                followAdvertiser = updatedMetadata,
                 wasExisting = true,
                 followStatus = followStatus
             )
@@ -44,7 +44,7 @@ class FollowService(
             )
 
             FollowOrSwitchResult.of(
-                followAdvertiserMetadata = savedMetadata,
+                followAdvertiser = savedMetadata,
                 wasExisting = false,
                 followStatus = null
             )

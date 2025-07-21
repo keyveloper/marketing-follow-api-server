@@ -1,10 +1,10 @@
 package org.example.marketingfollowapiserver.dto
 
 data class GetFollowersResult(
-    val followers: List<FollowAdvertiserMetadata>
+    val followers: List<FollowAdvertiser>
 ) {
     companion object {
-        fun of(followers: List<FollowAdvertiserMetadata>): GetFollowersResult {
+        fun of(followers: List<FollowAdvertiser>): GetFollowersResult {
             return GetFollowersResult(followers = followers)
         }
     }

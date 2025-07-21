@@ -2,7 +2,7 @@ package org.example.marketingfollowapiserver.repository
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.marketingfollowapiserver.dto.FollowAdvertiserEntity
-import org.example.marketingfollowapiserver.dto.FollowAdvertiserMetadata
+import org.example.marketingfollowapiserver.dto.FollowAdvertiser
 import org.example.marketingfollowapiserver.dto.SaveFollow
 import org.example.marketingfollowapiserver.enums.FollowStatus
 import org.example.marketingfollowapiserver.exception.SaveFailedForDatabaseException
@@ -16,7 +16,7 @@ import java.util.UUID
 class FollowAdvertiserRepository {
     private val logger = KotlinLogging.logger {}
 
-    fun save(saveFollow: SaveFollow): FollowAdvertiserMetadata {
+    fun save(saveFollow: SaveFollow): FollowAdvertiser {
         return try {
             transaction {
                 val entity = FollowAdvertiserEntity.new {
@@ -24,7 +24,7 @@ class FollowAdvertiserRepository {
                     influencerId = saveFollow.influencerId
                     followStatus = saveFollow.followStatus
                 }
-                FollowAdvertiserMetadata.fromEntity(entity)
+                FollowAdvertiser.fromEntity(entity)
             }
         } catch (e: Exception) {
             logger.error(e) { "Failed to save FollowAdvertiser: $saveFollow" }
@@ -35,14 +35,14 @@ class FollowAdvertiserRepository {
         }
     }
 
-    fun switchFollowStatus(followAdvertiserEntity: FollowAdvertiserEntity): FollowAdvertiserMetadata {
+    fun switchFollowStatus(followAdvertiserEntity: FollowAdvertiserEntity): FollowAdvertiser {
         return try {
             transaction {
                 followAdvertiserEntity.followStatus = when (followAdvertiserEntity.followStatus) {
                     FollowStatus.FOLLOW -> FollowStatus.UNFOLLOW
                     FollowStatus.UNFOLLOW -> FollowStatus.FOLLOW
                 }
-                FollowAdvertiserMetadata.fromEntity(followAdvertiserEntity)
+                FollowAdvertiser.fromEntity(followAdvertiserEntity)
             }
         } catch (e: Exception) {
             logger.error(e) { "Failed to switch follow status for entity: ${followAdvertiserEntity.id}" }
@@ -62,21 +62,21 @@ class FollowAdvertiserRepository {
         }
     }
 
-    fun findFollowersByAdvertiserId(advertiserId: UUID): List<FollowAdvertiserMetadata> {
+    fun findFollowersByAdvertiserId(advertiserId: UUID): List<FollowAdvertiser> {
         return transaction {
             FollowAdvertiserEntity.find {
                 (FollowAdvertisersTable.advertiserId eq advertiserId) and
                         (FollowAdvertisersTable.followStatus eq FollowStatus.FOLLOW)
-            }.map { FollowAdvertiserMetadata.fromEntity(it) }
+            }.map { FollowAdvertiser.fromEntity(it) }
         }
     }
 
-    fun findFollowingByInfluencerId(influencerId: UUID): List<FollowAdvertiserMetadata> {
+    fun findFollowingByInfluencerId(influencerId: UUID): List<FollowAdvertiser> {
         return transaction {
             FollowAdvertiserEntity.find {
                 (FollowAdvertisersTable.influencerId eq influencerId) and
                         (FollowAdvertisersTable.followStatus eq FollowStatus.FOLLOW)
-            }.map { FollowAdvertiserMetadata.fromEntity(it) }
+            }.map { FollowAdvertiser.fromEntity(it) }
         }
     }
 }
