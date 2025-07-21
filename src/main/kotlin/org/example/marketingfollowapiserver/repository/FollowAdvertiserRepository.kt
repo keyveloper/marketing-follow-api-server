@@ -3,7 +3,7 @@ package org.example.marketingfollowapiserver.repository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.marketingfollowapiserver.dto.FollowAdvertiserEntity
 import org.example.marketingfollowapiserver.dto.FollowAdvertiserMetadata
-import org.example.marketingfollowapiserver.dto.SaveFollowAdvertiser
+import org.example.marketingfollowapiserver.dto.SaveFollow
 import org.example.marketingfollowapiserver.enums.FollowStatus
 import org.example.marketingfollowapiserver.exception.SaveFailedForDatabaseException
 import org.example.marketingfollowapiserver.table.FollowAdvertisersTable
@@ -16,18 +16,18 @@ import java.util.UUID
 class FollowAdvertiserRepository {
     private val logger = KotlinLogging.logger {}
 
-    fun save(saveFollowAdvertiser: SaveFollowAdvertiser): FollowAdvertiserMetadata {
+    fun save(saveFollow: SaveFollow): FollowAdvertiserMetadata {
         return try {
             transaction {
                 val entity = FollowAdvertiserEntity.new {
-                    advertiserId = saveFollowAdvertiser.advertiserId
-                    influencerId = saveFollowAdvertiser.influencerId
-                    followStatus = saveFollowAdvertiser.followStatus
+                    advertiserId = saveFollow.advertiserId
+                    influencerId = saveFollow.influencerId
+                    followStatus = saveFollow.followStatus
                 }
                 FollowAdvertiserMetadata.fromEntity(entity)
             }
         } catch (e: Exception) {
-            logger.error(e) { "Failed to save FollowAdvertiser: $saveFollowAdvertiser" }
+            logger.error(e) { "Failed to save FollowAdvertiser: $saveFollow" }
             throw SaveFailedForDatabaseException(
                 logics = "FollowAdvertiserRepository.save",
                 message = "Failed to save follow relationship: ${e.message}"

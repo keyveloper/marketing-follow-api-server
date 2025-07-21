@@ -3,7 +3,7 @@ package org.example.marketingfollowapiserver.dto
 import org.example.marketingfollowapiserver.enums.FollowStatus
 import java.util.UUID
 
-data class SaveFollowAdvertiser(
+data class SaveFollow(
     val advertiserId: UUID,
     val influencerId: UUID,
     val followStatus: FollowStatus
@@ -13,8 +13,8 @@ data class SaveFollowAdvertiser(
             advertiserId: UUID,
             influencerId: UUID,
             followStatus: FollowStatus
-        ): SaveFollowAdvertiser {
-            return SaveFollowAdvertiser(
+        ): SaveFollow {
+            return SaveFollow(
                 advertiserId = advertiserId,
                 influencerId = influencerId,
                 followStatus = followStatus

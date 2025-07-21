@@ -36,7 +36,7 @@ class FollowService(
             logger.info { "No existing relationship found, creating new FOLLOW relationship" }
 
             val savedMetadata = followAdvertiserRepository.save(
-                SaveFollowAdvertiser.of(
+                SaveFollow.of(
                     advertiserId = advertiserId,
                     influencerId = influencerId,
                     followStatus = FollowStatus.FOLLOW
