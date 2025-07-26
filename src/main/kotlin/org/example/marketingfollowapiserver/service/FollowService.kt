@@ -3,7 +3,9 @@ package org.example.marketingfollowapiserver.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.example.marketingfollowapiserver.dto.*
 import org.example.marketingfollowapiserver.enums.FollowStatus
+import org.example.marketingfollowapiserver.exception.FailedFollowException
 import org.example.marketingfollowapiserver.repository.FollowAdvertiserRepository
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -13,61 +15,65 @@ class FollowService(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    fun followOrSwitch(advertiserId: UUID, influencerId: UUID): FollowOrSwitchResult {
-        logger.info { "followOrSwitch called: advertiserId=$advertiserId, influencerId=$influencerId" }
-
-        val existingEntity = followAdvertiserRepository.findByAdvertiserIdAndInfluencerId(
-            advertiserId = advertiserId,
-            influencerId = influencerId
-        )
-
-        return if (existingEntity != null) {
-            val followStatus = existingEntity.followStatus
-            logger.info { "Existing relationship found, switching status from $followStatus" }
-
-            val updatedMetadata = followAdvertiserRepository.switchFollowStatus(existingEntity)
-
-            FollowOrSwitchResult.of(
-                followAdvertiser = updatedMetadata,
-                wasExisting = true,
-                followStatus = followStatus
-            )
-        } else {
-            logger.info { "No existing relationship found, creating new FOLLOW relationship" }
-
-            val savedMetadata = followAdvertiserRepository.save(
-                SaveFollow.of(
-                    advertiserId = advertiserId,
-                    influencerId = influencerId,
-                    followStatus = FollowStatus.FOLLOW
-                )
-            )
-
-            FollowOrSwitchResult.of(
-                followAdvertiser = savedMetadata,
-                wasExisting = false,
-                followStatus = null
-            )
+    fun followUpsert(influencerId: UUID, advertiserId: UUID): FollowAdvertiser {
+        return transaction {
+            followAdvertiserRepository.upsertFollow(
+                advertiserId,
+                influencerId,
+                FollowStatus.FOLLOW)
         }
     }
 
+    fun unFollow(influencerId: UUID, advertiserId: UUID): UnFollowResult {
+        return transaction {
+            val effectedRow = followAdvertiserRepository.unFollowStatusByUserIds(
+                influencerId, advertiserId
+            )
+
+            if (effectedRow == 0) throw FailedFollowException(
+                logics = "FollowSvc-unFollow",
+                message = "unfollow Failed maybe can't find follow entity influencerId" +
+                        " = ${influencerId}, advertiserId = $advertiserId"
+            )
+
+            UnFollowResult.of(effectedRow)
+        }
+    }
+
+    /**
+     * Follow or switch follow status
+     * Transaction managed at service layer
+     */
+
+    /**
+     * Get all followers for an advertiser
+     * Transaction managed at service layer
+     */
     fun getFollowersByAdvertiserId(advertiserId: UUID): GetFollowersResult {
         logger.info { "getFollowersByAdvertiserId called: advertiserId=$advertiserId" }
 
-        val followers = followAdvertiserRepository.findFollowersByAdvertiserId(advertiserId)
+        return transaction {
+            val followers = followAdvertiserRepository.findFollowersByAdvertiserId(advertiserId)
 
-        logger.info { "Found ${followers.size} followers for advertiserId=$advertiserId" }
+            logger.info { "Found ${followers.size} followers for advertiserId=$advertiserId" }
 
-        return GetFollowersResult.of(followers = followers)
+            GetFollowersResult.of(followers = followers)
+        }
     }
 
+    /**
+     * Get all following for an influencer
+     * Transaction managed at service layer
+     */
     fun getFollowingByInfluencerId(influencerId: UUID): GetFollowingResult {
         logger.info { "getFollowingByInfluencerId called: influencerId=$influencerId" }
 
-        val following = followAdvertiserRepository.findFollowingByInfluencerId(influencerId)
+        return transaction {
+            val following = followAdvertiserRepository.findFollowingByInfluencerId(influencerId)
 
-        logger.info { "Found ${following.size} following for influencerId=$influencerId" }
+            logger.info { "Found ${following.size} following for influencerId=$influencerId" }
 
-        return GetFollowingResult.of(following = following)
+            GetFollowingResult.of(following = following)
+        }
     }
 }

@@ -1,6 +1,8 @@
 package org.example.marketingfollowapiserver.dto
 
 import org.example.marketingfollowapiserver.enums.FollowStatus
+import org.example.marketingfollowapiserver.table.FollowAdvertisersTable
+import org.jetbrains.exposed.sql.ResultRow
 import java.util.UUID
 
 data class FollowAdvertiser(
@@ -20,6 +22,17 @@ data class FollowAdvertiser(
                 followStatus = entity.followStatus,
                 createdAt = entity.createdAt,
                 lastModifiedAt = entity.lastModifiedAt
+            )
+        }
+
+        fun fromResultRow(row: ResultRow): FollowAdvertiser {
+            return FollowAdvertiser(
+                id = row[FollowAdvertisersTable.id].value,
+                advertiserId = row[FollowAdvertisersTable.advertiserId],
+                influencerId = row[FollowAdvertisersTable.influencerId],
+                followStatus = row[FollowAdvertisersTable.followStatus],
+                createdAt = row[FollowAdvertisersTable.createdAt],
+                lastModifiedAt = row[FollowAdvertisersTable.lastModifiedAt]
             )
         }
     }

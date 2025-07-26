@@ -3,12 +3,12 @@ package org.example.marketingfollowapiserver.dto
 import org.example.marketingfollowapiserver.enums.MSAServiceErrorCode
 import org.springframework.http.HttpStatus
 
-data class FollowOrSwitchResponseFromServer(
+data class FollowResponseFromServer(
     override val httpStatus: HttpStatus,
     override val msaServiceErrorCode: MSAServiceErrorCode,
     override val errorMessage: String? = null,
     override val logics: String? = null,
-    val result: FollowOrSwitchResult?
+    val result: FollowAdvertiser
 ) : MSABusinessErrorResponse(httpStatus, msaServiceErrorCode, errorMessage, logics) {
     companion object {
         fun of(
@@ -16,9 +16,9 @@ data class FollowOrSwitchResponseFromServer(
             msaServiceErrorCode: MSAServiceErrorCode,
             errorMessage: String?,
             logics: String,
-            result: FollowOrSwitchResult?
-        ): FollowOrSwitchResponseFromServer {
-            return FollowOrSwitchResponseFromServer(
+            result: FollowAdvertiser
+        ): FollowResponseFromServer {
+            return FollowResponseFromServer(
                 httpStatus = httpStatus,
                 msaServiceErrorCode = msaServiceErrorCode,
                 errorMessage = errorMessage,

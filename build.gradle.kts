@@ -33,13 +33,13 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // DB: exposed
+    // DB: exposed (upgraded to latest version for upsert support)
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-    implementation("org.jetbrains.exposed:exposed-core:0.59.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.59.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.59.0")
-    implementation("org.jetbrains.exposed:exposed-java-time:0.59.0")
+    implementation("org.jetbrains.exposed:exposed-core:0.57.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.57.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.57.0")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.57.0")
 
     // Logger
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")

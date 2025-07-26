@@ -13,3 +13,6 @@ spring:
       maximum-pool-size: 10
       idle-timeout: 300000
       pool-name: marketingHikariCP
+
+server:
+  port: 8084

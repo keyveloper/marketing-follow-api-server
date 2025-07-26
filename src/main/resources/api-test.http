@@ -1,0 +1,63 @@
+### Marketing Follow API Server - HTTP Client Tests
+### Server: http://localhost:8084
+
+### Variables
+@baseUrl = http://localhost:8084
+@advertiserId = 550e8400-e29b-41d4-a716-446655440006
+@influencerId = 550e8400-e29b-41d4-a716-446655440043
+@influencerId2 = 550e8400-e29b-41d4-a716-446655440123
+
+###############################################################################
+### 1. Follow (upsert) - Create New Follow Relationship
+###############################################################################
+POST {{baseUrl}}/api/follow
+Content-Type: application/json
+
+{
+  "advertiserId": "{{advertiserId}}",
+  "influencerId": "{{influencerId}}"
+}
+
+
+###############################################################################
+### 2. Follow (upsert) - Create New Follow Relationship -influ2
+###############################################################################
+POST {{baseUrl}}/api/follow
+Content-Type: application/json
+
+{
+  "advertiserId": "{{advertiserId}}",
+  "influencerId": "{{influencerId2}}"
+}
+
+
+
+###############################################################################
+### 2. Follow Or Switch - Toggle Existing Relationship (FOLLOW -> UNFOLLOW)
+###############################################################################
+POST {{baseUrl}}/api/follow/unfollow
+Content-Type: application/json
+
+{
+  "advertiserId": "{{advertiserId}}",
+  "influencerId": "{{influencerId}}"
+}
+
+
+
+###############################################################################
+### 5. Get Followers - Query all influencers following an advertiser
+###############################################################################
+GET {{baseUrl}}/api/follow/followers?advertiserId={{advertiserId}}
+
+
+###############################################################################
+### 7. Get Following - Query all advertisers that an influencer is following
+###############################################################################
+GET {{baseUrl}}/api/follow/following?influencerId={{influencerId}}
+
+###############################################################################
+### 8. Get Following - Another influencer
+###############################################################################
+GET {{baseUrl}}/api/follow/following?influencerId={{influencerId2}}
+
