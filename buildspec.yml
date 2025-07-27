@@ -1,6 +1,6 @@
 version: 0.2
 
-phase:
+phases:
   install:
     runtime-versions:
       java: corretto17
@@ -14,7 +14,7 @@ phase:
 
   build:
     commands:
-      - echo "Build phase - Building Spring Boot application
+      - echo "Build phase - Building Spring Boot application"
       - ./gradlew clean build -x test
       - echo "Build Completed"
 
