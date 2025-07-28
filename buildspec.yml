@@ -1,0 +1,26 @@
+version: 0.2
+
+phase:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo "Install phase - Java 17 set."
+
+  pre_build:
+    commands:
+      - echo "Pre-build phase - Grant execute permission to Gradle wrapper"
+      - chmod +x gradlew
+
+  build:
+    commands:
+      - echo "Build phase - Building Spring Boot application
+      - ./gradlew clean build -x test
+      - echo "Build Completed"
+
+artifacts:
+  file:
+    - build/libs/*.jar
+    - appspec.yml
+    - scripts/**/*
+  discard-path: yes
