@@ -19,7 +19,7 @@ phase:
       - echo "Build Completed"
 
 artifacts:
-  file:
+  files:
     - build/libs/*.jar
     - appspec.yml
     - scripts/**/*
