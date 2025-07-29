@@ -8,7 +8,7 @@ data class GetFollowersResponseFromServer(
     override val msaServiceErrorCode: MSAServiceErrorCode,
     override val errorMessage: String? = null,
     override val logics: String? = null,
-    val result: GetFollowersResult?
+    val result: GetFollowersResultFromServer?
 ) : MSABusinessErrorResponse(httpStatus, msaServiceErrorCode, errorMessage, logics) {
     companion object {
         fun of(
@@ -16,7 +16,7 @@ data class GetFollowersResponseFromServer(
             msaServiceErrorCode: MSAServiceErrorCode,
             errorMessage: String?,
             logics: String,
-            result: GetFollowersResult?
+            result: GetFollowersResultFromServer?
         ): GetFollowersResponseFromServer {
             return GetFollowersResponseFromServer(
                 httpStatus = httpStatus,

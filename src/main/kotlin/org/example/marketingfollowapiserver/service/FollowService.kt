@@ -24,7 +24,7 @@ class FollowService(
         }
     }
 
-    fun unFollow(influencerId: UUID, advertiserId: UUID): UnFollowResult {
+    fun unFollow(influencerId: UUID, advertiserId: UUID): UnFollowResultFromServer {
         return transaction {
             val effectedRow = followAdvertiserRepository.unFollowStatusByUserIds(
                 influencerId, advertiserId
@@ -36,7 +36,7 @@ class FollowService(
                         " = ${influencerId}, advertiserId = $advertiserId"
             )
 
-            UnFollowResult.of(effectedRow)
+            UnFollowResultFromServer.of(effectedRow)
         }
     }
 
@@ -49,7 +49,7 @@ class FollowService(
      * Get all followers for an advertiser
      * Transaction managed at service layer
      */
-    fun getFollowersByAdvertiserId(advertiserId: UUID): GetFollowersResult {
+    fun getFollowersByAdvertiserId(advertiserId: UUID): GetFollowersResultFromServer {
         logger.info { "getFollowersByAdvertiserId called: advertiserId=$advertiserId" }
 
         return transaction {
@@ -57,7 +57,7 @@ class FollowService(
 
             logger.info { "Found ${followers.size} followers for advertiserId=$advertiserId" }
 
-            GetFollowersResult.of(followers = followers)
+            GetFollowersResultFromServer.of(followers = followers)
         }
     }
 
@@ -65,7 +65,7 @@ class FollowService(
      * Get all following for an influencer
      * Transaction managed at service layer
      */
-    fun getFollowingByInfluencerId(influencerId: UUID): GetFollowingResult {
+    fun getFollowingByInfluencerId(influencerId: UUID): GetFollowingResultFromServer {
         logger.info { "getFollowingByInfluencerId called: influencerId=$influencerId" }
 
         return transaction {
@@ -73,7 +73,7 @@ class FollowService(
 
             logger.info { "Found ${following.size} following for influencerId=$influencerId" }
 
-            GetFollowingResult.of(following = following)
+            GetFollowingResultFromServer.of(following = following)
         }
     }
 }

@@ -4,7 +4,7 @@ import org.example.marketingfollowapiserver.enums.MSAServiceErrorCode
 import org.springframework.http.HttpStatus
 
 data class UnFollowResponseFromServer(
-    val result: UnFollowResult,
+    val result: UnFollowResultFromServer,
     override val httpStatus: HttpStatus,
     override val msaServiceErrorCode: MSAServiceErrorCode,
     override val errorMessage: String?,
@@ -12,7 +12,7 @@ data class UnFollowResponseFromServer(
 ): MSABusinessErrorResponse(httpStatus, msaServiceErrorCode, errorMessage, logics) {
     companion object {
         fun of(
-            result: UnFollowResult,
+            result: UnFollowResultFromServer,
             httpStatus: HttpStatus,
             msaServiceErrorCode: MSAServiceErrorCode,
             errorMessage: String?,
