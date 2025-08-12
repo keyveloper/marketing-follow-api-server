@@ -15,7 +15,27 @@ import java.util.*
 @Repository
 class FollowAdvertiserRepository {
     private val logger = KotlinLogging.logger {}
+    fun upsertFollow(
+        advertiserId: UUID, influencerId: UUID, status: FollowStatus
+    ): FollowAdvertiser {
+        val now = System.currentTimeMillis()
 
+        // Execute Exposed's type-safe upsert and get ResultRow
+        val upsertStatement = FollowAdvertisersTable.upsert {
+            it[FollowAdvertisersTable.advertiserId] = advertiserId
+            it[FollowAdvertisersTable.influencerId] = influencerId
+            it[followStatus] = status
+            it[createdAt] = now
+            it[lastModifiedAt] = now
+        }
+
+        val resultRow = upsertStatement.resultedValues?.get(0) ?: throw FailedFollowException(
+            logics = "followAdRepo-upsert", message = "Failed Upsert"
+        )
+
+        // Convert ResultRow to FollowAdvertiser (no additional SELECT needed!)
+        return FollowAdvertiser.fromResultRow(resultRow)
+    }
 
     /**
      * Switch follow status (FOLLOW <-> UNFOLLOW) using DSL update
@@ -23,7 +43,7 @@ class FollowAdvertiserRepository {
      *
      * @return Number of rows updated (0 if not found, 1 if updated)
      */
-    fun unFollowStatusByUserIds(
+    fun unFollow(
         influencerId: UUID, advertiserId: UUID
     ): Int {
         return FollowAdvertisersTable.update(
@@ -88,25 +108,5 @@ class FollowAdvertiserRepository {
      * - lastModifiedAt is always updated to current timestamp
      * - Returns ResultRow directly from upsert (no additional SELECT needed)
      */
-    fun upsertFollow(
-        advertiserId: UUID, influencerId: UUID, status: FollowStatus
-    ): FollowAdvertiser {
-        val now = System.currentTimeMillis()
 
-        // Execute Exposed's type-safe upsert and get ResultRow
-        val upsertStatement = FollowAdvertisersTable.upsert {
-            it[FollowAdvertisersTable.advertiserId] = advertiserId
-            it[FollowAdvertisersTable.influencerId] = influencerId
-            it[followStatus] = status
-            it[createdAt] = now
-            it[lastModifiedAt] = now
-        }
-
-        val resultRow = upsertStatement.resultedValues?.get(0) ?: throw FailedFollowException(
-            logics = "followAdRepo-upsert", message = "Failed Upsert"
-        )
-
-        // Convert ResultRow to FollowAdvertiser (no additional SELECT needed!)
-        return FollowAdvertiser.fromResultRow(resultRow)
-    }
 }

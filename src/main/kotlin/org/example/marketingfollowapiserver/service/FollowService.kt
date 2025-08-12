@@ -26,7 +26,7 @@ class FollowService(
 
     fun unFollow(influencerId: UUID, advertiserId: UUID): UnFollowResultFromServer {
         return transaction {
-            val effectedRow = followAdvertiserRepository.unFollowStatusByUserIds(
+            val effectedRow = followAdvertiserRepository.unFollow(
                 influencerId, advertiserId
             )
 

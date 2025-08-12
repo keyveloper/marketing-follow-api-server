@@ -3,9 +3,8 @@
 
 ### Variables
 @baseUrl = http://localhost:8084
-@advertiserId = 550e8400-e29b-41d4-a716-446655440006
-@influencerId = 550e8400-e29b-41d4-a716-446655440043
-@influencerId2 = 550e8400-e29b-41d4-a716-446655440123
+@advertiserId = 64882d9c-10a1-7052-f283-384bc8eac3c9
+@influencerId = 14a80d8c-d021-70a9-ba28-5bab07c853c5
 
 ###############################################################################
 ### 1. Follow (upsert) - Create New Follow Relationship
