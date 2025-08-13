@@ -40,9 +40,9 @@ spring:
       on-profile: db-aws
 
   datasource:
-    url: jdbc:mariadb://aws-rds-endpoint:3306/marketing-follow?userSSL=false
-    username: aws_user
-    password: aws_password
+    url: jdbc:mariadb://marketing-db-private.c5ccaum4a2ih.ap-northeast-2.rds.amazonaws.com:3306/marketing-follow?useSSL=false
+    username: admin
+    password: marketing1234
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       connection-timeout: 20000
